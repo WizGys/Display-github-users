@@ -9,7 +9,7 @@
         <div>
             <form @submit.prevent="submitForm">
                 <input type="number" v-model="param" placeholder="#Users" />
-                <button type="submit">Show</button>
+                <button class="submit_button" type="submit">Show</button>
             </form>
 
             <br />
@@ -20,7 +20,7 @@
                     v-model="username"
                     placeholder="Specific Username"
                 />
-                <button type="submit">Search</button>
+                <button class="submit_button" type="submit">Search</button>
             </form>
         </div>
 
@@ -172,6 +172,7 @@ export default {
 }
 
 #home_button {
+    color: white;
     position: fixed;
     top: 5vh;
     left: 1vw;
@@ -180,7 +181,18 @@ export default {
     font-size: large;
     font-weight: bold;
     background-color: #5191f0;
+    border: none;
+    cursor: pointer;
+}
+
+.submit_button {
     color: white;
+    margin: 1vh;
+    padding: 1vh;
+    border-radius: 10px;
+    font-size: large;
+    font-weight: bold;
+    background-color: #5191f0;
     border: none;
     cursor: pointer;
 }
