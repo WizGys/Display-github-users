@@ -31,9 +31,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
 Route::get('/profili/{param}', function (ProfileController $users, $param) {
     return Inertia::render('Profili', [
         'users' => $users->fetchMoreUsers($param)
+    ]);
+});
+
+Route::get('/profilo/{param}', function (ProfileController $users, $param) {
+    return Inertia::render('Profili', [
+        'users' => $users->fetchUserDetails($param)
     ]);
 });
 

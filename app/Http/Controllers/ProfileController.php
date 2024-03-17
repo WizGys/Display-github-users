@@ -68,28 +68,32 @@ class ProfileController extends Controller
         $client = new Client();
         $response = $client->request('GET', 'https://api.github.com/users?per_page=10');
         $users = json_decode($response->getBody()->getContents(), true);
-        
+
         foreach ($users as &$user) {
             $userDetailsResponse = $client->request('GET', $user['url']);
             $user['details'] = json_decode($userDetailsResponse->getBody()->getContents(), true);
         }
-        
+
         return $users;
     }
-    
+
     public function fetchMoreUsers($param)
     {
-        $limit = $param ?? 10;
         $client = new Client();
+        $limit = $param ?? 10;
         $response = $client->request('GET', 'https://api.github.com/users?per_page=' . $limit);
         $users = json_decode($response->getBody()->getContents(), true);
-        
-        foreach ($users as &$user) {
-            $userDetailsResponse = $client->request('GET', $user['url']);
-            $user['details'] = json_decode($userDetailsResponse->getBody()->getContents(), true);
-        }
+
         return $users;
+
     }
 
+    public function fetchUserDetails($username)
+    {
+        $client = new Client();
+        $userDetailsResponse = $client->request('GET', 'https://api.github.com/users/' . $username);
+        $userDetails = json_decode($userDetailsResponse->getBody()->getContents(), true);
 
+        return $userDetails;
+    }
 }

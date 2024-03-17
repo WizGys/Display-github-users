@@ -5,10 +5,17 @@
 
         <!-- <div>{{ parsedUsers[0].details.followers }}</div> -->
 
-        <form @submit.prevent="submitForm">
-            <input type="number" v-model="param" placeholder="#utenti" />
-            <button type="submit">Mostra</button>
+        <div>
+            <form @submit.prevent="submitForm">
+            <input type="number" v-model="param" placeholder="#users" />
+            <button type="submit">Show</button>
         </form>
+        
+        <form @submit.prevent="submitSingleUser">
+            <input type="text" v-model="username" placeholder="Specific Username" />
+            <button type="submit">Search</button>
+        </form>
+        </div> 
 
         <ul id="all-items">
             <li id="single-item" v-for="user in parsedUsers">
@@ -18,7 +25,9 @@
                 <a :href="user.html_url"
                     ><p>{{ user.html_url }}</p></a
                 >
-                <br>
+
+                <div v-if="user.name">
+                    <br>
                 <h2>Followers: {{ user.details.followers }}</h2>
                 <h2>Following: {{ user.details.following }}</h2>
                 <br>
@@ -27,6 +36,8 @@
                 <br>
                 <h2>Created: {{ new Date(user.details.created_at).toLocaleDateString() }}</h2>
                 <h2>Last update: {{ new Date(user.details.updated_at).toLocaleDateString() }}</h2>
+                </div>
+                
 
 
 
@@ -59,6 +70,9 @@ export default {
     methods: {
         submitForm() {
             Inertia.get("/profili/" + this.param);
+        },
+        submitSingleUser() {
+            Inertia.get("/profilo/" + this.username);
         },
     },
     computed: {
