@@ -24,6 +24,7 @@
             </form>
         </div>
 
+
         <div v-if="user" class="single-item" style="margin-top: 5vh">
             <img :src="user.avatar_url" alt="User avatar" />
             <br />
@@ -45,6 +46,7 @@
                 Last update:
                 {{ new Date(user.updated_at).toLocaleDateString() }}
             </p>
+            <br>
         </div>
 
         <ul id="all-items">
@@ -55,6 +57,10 @@
                 <a :href="user.html_url"
                     ><p>{{ user.html_url }}</p></a
                 >
+                
+                <br>
+
+                <button id="showMore" @click="showMore(user.login)">Show more</button>
 
                 <div
                     v-if="
@@ -117,6 +123,10 @@ export default {
         returnHome() {
             Inertia.get("/");
         },
+        showMore(user) {
+            console.log(user);
+            Inertia.get("/profilo/" + user);
+        },
     },
     computed: {
         parsedUsers() {
@@ -171,11 +181,13 @@ export default {
     transform: scale(1.04);
 }
 
-#home_button {
+.single-item:active {
+    box-shadow: 5px 5px 5px 5px #022f72;
+    transform: scale(1.02);
+}
+
+button {
     color: white;
-    position: fixed;
-    top: 5vh;
-    left: 1vw;
     padding: 1vh;
     border-radius: 10px;
     font-size: large;
@@ -183,6 +195,22 @@ export default {
     background-color: #5191f0;
     border: none;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #022f72;
+}
+
+button:active {
+    transform: scale(0.9);
+}
+
+
+#home_button {
+    position: fixed;
+    top: 5vh;
+    left: 1vw;
 }
 
 .submit_button {
@@ -196,6 +224,7 @@ export default {
     border: none;
     cursor: pointer;
 }
+
 
 img {
     width: 100px;

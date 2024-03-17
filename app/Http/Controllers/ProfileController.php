@@ -91,6 +91,10 @@ class ProfileController extends Controller
         $client = new Client();
         $limit = $param ?? 10;
 
+        if($limit < 1) {
+            $limit = 10;
+        }
+
         try {
             $users = $client->request('GET', 'https://api.github.com/users?per_page=' . $limit);
             $users = json_decode($users->getBody()->getContents(), true);
