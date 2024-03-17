@@ -66,13 +66,22 @@ class ProfileController extends Controller
     public function fetchUsers()
     {
         $client = new Client();
-        $response = $client->request('GET', 'https://api.github.com/users?per_page=10');
-        $users = json_decode($response->getBody()->getContents(), true);
 
-        foreach ($users as &$user) {
-            $userDetailsResponse = $client->request('GET', $user['url']);
-            $user['details'] = json_decode($userDetailsResponse->getBody()->getContents(), true);
+        try {
+            $users = $client->request('GET', 'https://api.github.com/users?per_page=10');
+            $users = json_decode($users->getBody()->getContents(), true);
+        } catch (\Exception $e) {
+            // Log the error message for debugging
+            error_log($e->getMessage());
+
+            // Return a default error message
+            return ['error' => 'An error occurred while fetching user details.'];
         }
+
+        // foreach ($users as &$user) {
+        //     $userDetailsResponse = $client->request('GET', $user['url']);
+        //     $user['details'] = json_decode($userDetailsResponse->getBody()->getContents(), true);
+        // }
 
         return $users;
     }
@@ -81,19 +90,34 @@ class ProfileController extends Controller
     {
         $client = new Client();
         $limit = $param ?? 10;
-        $response = $client->request('GET', 'https://api.github.com/users?per_page=' . $limit);
-        $users = json_decode($response->getBody()->getContents(), true);
 
+        try {
+            $users = $client->request('GET', 'https://api.github.com/users?per_page=' . $limit);
+            $users = json_decode($users->getBody()->getContents(), true);
+        } catch (\Exception $e) {
+            // Log the error message for debugging
+            error_log($e->getMessage());
+
+            // Return a default error message
+            return ['error' => 'An error occurred while fetching user details.'];
+        }
         return $users;
-
     }
 
     public function fetchUserDetails($username)
     {
         $client = new Client();
-        $userDetailsResponse = $client->request('GET', 'https://api.github.com/users/' . $username);
-        $userDetails = json_decode($userDetailsResponse->getBody()->getContents(), true);
+        try {
+            $userResponse = $client->request('GET', 'https://api.github.com/users/' . $username);
+            $user = json_decode($userResponse->getBody()->getContents(), true);
+        } catch (\Exception $e) {
+            // Log the error message for debugging
+            error_log($e->getMessage());
 
-        return $userDetails;
+            // Return a default error message
+            return ['error' => 'An error occurred while fetching user details.'];
+        }
+
+        return $user;
     }
 }
